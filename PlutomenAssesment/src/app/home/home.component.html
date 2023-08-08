@@ -1,1 +1,16 @@
-<p>home works!</p>
+<h2 class="h2"></h2>
+<div style="display: flex; flex-wrap: wrap;">
+    <div style="height:fit-content; width: 19rem; margin: 15px; background-color: #e2e2e2;" class="card"
+        *ngFor="let lib of listOfLibraries,let i = index">
+        <div class="view overlay">
+            <img class="img-fluid" style="border-radius: 15px; padding: 5px;" src="{{lib.img}}"
+                alt="{{lib.discription}}">
+        </div>
+        <div class="card-body">
+            <h6 class="card-title">{{lib.name}}</h6>
+            <hr>
+            <p class="card-title">status<span class="card-text">{{lib.status}}</span></p>
+            <hr class="mt-0 mb-4">
+        </div>
+    </div>
+</div>
