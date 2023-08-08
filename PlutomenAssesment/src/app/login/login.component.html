@@ -1,0 +1,11 @@
+<form class="formlogin" [formGroup]="form" (submit)="submit()">
+    <div class="form-control">
+        <input type="email" class="form-control" formControlName="email" placeholder="Email">
+    </div>
+    <div class="form-control">
+        <input type="password" class="form-control" formControlName="password" placeholder=" Password">
+    </div>
+    <div class="form-control">
+        <button class=" w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    </div>
+</form>
