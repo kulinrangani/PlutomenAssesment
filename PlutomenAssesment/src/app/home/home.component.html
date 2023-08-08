@@ -1,16 +1,29 @@
 <h2 class="h2"></h2>
-<div style="display: flex; flex-wrap: wrap;">
+<div style="display: flex; flex-wrap: wrap;  justify-content: space-evenly;">
     <div style="height:fit-content; width: 19rem; margin: 15px; background-color: #e2e2e2;" class="card"
         *ngFor="let lib of listOfLibraries,let i = index">
         <div class="view overlay">
             <img class="img-fluid" style="border-radius: 15px; padding: 5px;" src="{{lib.img}}"
-                alt="{{lib.discription}}">
+                alt="{{lib.description}}">
         </div>
         <div class="card-body">
-            <h6 class="card-title">{{lib.name}}</h6>
             <hr>
-            <p class="card-title">status<span class="card-text">{{lib.status}}</span></p>
+            <h6 class="card-title">Name : {{lib.name}}</h6>
+            <hr>
+            <h6 class="card-title">CompanyDetails</h6>
+            <h6 class="card-title">{{lib.companyId._id}}</h6>
+            <p class="card-title">Company Name: <span class="card-text">{{lib.companyId.name}}</span></p>
             <hr class="mt-0 mb-4">
+            <h6 class="card-title">Library</h6>
+            <p class="card-title">Library Name: <span class="card-text">{{lib.libraryTypeId.name}}</span></p>
+            <h6 class="card-title">Category</h6>
+            <p class="card-title">Category Name: <span class="card-text">{{lib.categoryId.name}}</span></p>
+            <h6 class="card-title">MachineType</h6>
+            <p class="card-title">Machine Name: <span class="card-text">{{lib.machineTypeId.name}}</span></p>
+            <hr class="mt-0 mb-4">
+            <button>
+                Update Company
+            </button>
         </div>
     </div>
 </div>
