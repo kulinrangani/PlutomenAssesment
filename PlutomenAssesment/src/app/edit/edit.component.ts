@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LibraryserviceService } from '../services/libraryservice.service';
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
@@ -12,7 +13,8 @@ export class EditComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private service: LibraryserviceService
   ) {}
   libraryId: any;
   libraries: any;
@@ -45,11 +47,11 @@ export class EditComponent implements OnInit {
       subcategoryId: '',
     });
 
-    await this.getAllMachines();
-    await this.getMachineTypes();
-    await this.getSubCategories();
-    await this.getCategories();
-    await this.getLibraryTypes();
+    this.machines = await this.service.getAllMachines();
+    this.machineTypes = await this.service.getMachineTypes();
+    this.subCategories = await this.service.getSubCategories();
+    this.categories = await this.service.getCategories();
+    this.libraryTypes = await this.service.getLibraryTypes();
     this.setFormValue();
   }
 
@@ -88,60 +90,60 @@ export class EditComponent implements OnInit {
       );
   }
 
-  async getAllMachines() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/machines/all`, this.headers_object)
-        .toPromise();
-      this.machines = data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async getAllMachines() {
+  //   try {
+  //     const data = await this.http
+  //       .get(`${this.reqUrl}/backend/machines/all`, this.headers_object)
+  //       .toPromise();
+  //     this.machines = data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
-  async getMachineTypes() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/machine-types/all`, this.headers_object)
-        .toPromise();
-      this.machineTypes = data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async getMachineTypes() {
+  //   try {
+  //     const data = await this.http
+  //       .get(`${this.reqUrl}/backend/machine-types/all`, this.headers_object)
+  //       .toPromise();
+  //     this.machineTypes = data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-  async getSubCategories() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/subcategories/all`, this.headers_object)
-        .toPromise();
-      this.subCategories = data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async getSubCategories() {
+  //   try {
+  //     const data = await this.http
+  //       .get(`${this.reqUrl}/backend/subcategories/all`, this.headers_object)
+  //       .toPromise();
+  //     this.subCategories = data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-  async getCategories() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/categories/all`, this.headers_object)
-        .toPromise();
-      this.categories = data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async getCategories() {
+  //   try {
+  //     const data = await this.http
+  //       .get(`${this.reqUrl}/backend/categories/all`, this.headers_object)
+  //       .toPromise();
+  //     this.categories = data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-  async getLibraryTypes() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/library-types/all`, this.headers_object)
-        .toPromise();
-      this.libraryTypes = data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async getLibraryTypes() {
+  //   try {
+  //     const data = await this.http
+  //       .get(`${this.reqUrl}/backend/library-types/all`, this.headers_object)
+  //       .toPromise();
+  //     this.libraryTypes = data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   async updateLibrary() {
     const formData = this.libraryForm.getRawValue();

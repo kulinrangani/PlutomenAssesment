@@ -6,6 +6,7 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { LibraryserviceService } from '../services/libraryservice.service';
 
 @Component({
   selector: 'app-create-library',
@@ -13,7 +14,11 @@ import {
   styleUrls: ['./create-library.component.css'],
 })
 export class CreateLibraryComponent implements OnInit {
-  constructor(private http: HttpClient, private formBuilder: FormBuilder) {}
+  constructor(
+    private http: HttpClient,
+    private formBuilder: FormBuilder,
+    private service: LibraryserviceService
+  ) {}
   libraries: any;
   listOfLibraries: any[] = [];
   reqUrl: string = 'https://api.workflowdev.pluto-men.com';
@@ -39,67 +44,11 @@ export class CreateLibraryComponent implements OnInit {
       categoryId: '',
       subcategoryId: '',
     });
-
-    await this.getAllMachines();
-    await this.getMachineTypes();
-    await this.getSubCategories();
-    await this.getCategories();
-    await this.getLibraryTypes();
-  }
-
-  async getAllMachines() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/machines/all`, this.headers_object)
-        .toPromise();
-      this.machines = data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async getMachineTypes() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/machine-types/all`, this.headers_object)
-        .toPromise();
-      this.machineTypes = data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getSubCategories() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/subcategories/all`, this.headers_object)
-        .toPromise();
-      this.subCategories = data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getCategories() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/categories/all`, this.headers_object)
-        .toPromise();
-      this.categories = data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getLibraryTypes() {
-    try {
-      const data = await this.http
-        .get(`${this.reqUrl}/backend/library-types/all`, this.headers_object)
-        .toPromise();
-      this.libraryTypes = data;
-    } catch (error) {
-      console.log(error);
-    }
+    this.machines = await this.service.getAllMachines();
+    this.machineTypes = await this.service.getMachineTypes();
+    this.subCategories = await this.service.getSubCategories();
+    this.categories = await this.service.getCategories();
+    this.libraryTypes = await this.service.getLibraryTypes();
   }
 
   async createLibrary() {
