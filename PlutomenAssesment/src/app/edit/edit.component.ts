@@ -1,29 +1,77 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css'],
 })
 export class EditComponent implements OnInit {
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {}
   libraryId: any;
   libraries: any;
   listOfLibraries: any[] = [];
   library: any;
   reqUrl: string = 'https://api.workflowdev.pluto-men.com';
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  machines: any;
+  machineTypes: any;
+  subCategories: any;
+  categories: any;
+  libraryTypes: any;
+  lib: any;
+  libraryForm!: FormGroup;
+  t: string = JSON.parse(localStorage.getItem('token') || '');
+  headers_object = {
+    headers: new HttpHeaders().set('Authorization', `Bearer ${this.t}`),
+  };
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.libraryId = this.route.snapshot.paramMap.get('id');
-    let t: string = JSON.parse(localStorage.getItem('token') || '');
-    var headers_object = {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${t}`),
-    };
+    await this.getCurrentLibrary();
 
+    this.libraryForm = this.formBuilder.group({
+      name: ``,
+      description: ``,
+      machineId: ``,
+      machineTypeId: '',
+      libraryTypeId: '',
+      categoryId: '',
+      subcategoryId: '',
+    });
+
+    await this.getAllMachines();
+    await this.getMachineTypes();
+    await this.getSubCategories();
+    await this.getCategories();
+    await this.getLibraryTypes();
+    this.setFormValue();
+  }
+
+  setFormValue() {
+    this.libraryForm.get('name')?.setValue(this.library!.name);
+    this.libraryForm.get('description')?.setValue(this.library!.description);
+    this.libraryForm.get('machineId')?.setValue(this.library!.machineId._id);
+    this.libraryForm
+      .get('machineTypeId')
+      ?.setValue(this.library!.machineTypeId._id);
+    this.libraryForm
+      .get('libraryTypeId')
+      ?.setValue(this.library!.libraryTypeId._id);
+    this.libraryForm.get('categoryId')?.setValue(this.library!.categoryId._id);
+    this.libraryForm
+      .get('subcategoryId')
+      ?.setValue(this.library!.subcategoryId._id);
+  }
+
+  async getCurrentLibrary() {
     this.http
-      .get(`${this.reqUrl}/backend/libraries/1/100`, headers_object)
+      .get(`${this.reqUrl}/backend/libraries/1/100`, this.headers_object)
       .subscribe(
         (res) => {
           this.libraries = res;
@@ -33,11 +81,81 @@ export class EditComponent implements OnInit {
               this.library = lib;
             }
           });
-          console.log(this.library);
         },
         (err) => {
           console.log(err);
         }
       );
+  }
+
+  async getAllMachines() {
+    try {
+      const data = await this.http
+        .get(`${this.reqUrl}/backend/machines/all`, this.headers_object)
+        .toPromise();
+      this.machines = data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getMachineTypes() {
+    try {
+      const data = await this.http
+        .get(`${this.reqUrl}/backend/machine-types/all`, this.headers_object)
+        .toPromise();
+      this.machineTypes = data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getSubCategories() {
+    try {
+      const data = await this.http
+        .get(`${this.reqUrl}/backend/subcategories/all`, this.headers_object)
+        .toPromise();
+      this.subCategories = data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getCategories() {
+    try {
+      const data = await this.http
+        .get(`${this.reqUrl}/backend/categories/all`, this.headers_object)
+        .toPromise();
+      this.categories = data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getLibraryTypes() {
+    try {
+      const data = await this.http
+        .get(`${this.reqUrl}/backend/library-types/all`, this.headers_object)
+        .toPromise();
+      this.libraryTypes = data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateLibrary() {
+    const formData = this.libraryForm.getRawValue();
+    try {
+      const id = await this.http
+        .patch(
+          `${this.reqUrl}/backend/libraries/${this.libraryId}`,
+          formData,
+          this.headers_object
+        )
+        .toPromise();
+      this.router.navigate(['home']);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
