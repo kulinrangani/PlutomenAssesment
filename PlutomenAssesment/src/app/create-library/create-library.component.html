@@ -1,0 +1,51 @@
+<div style="margin: 50px;">
+    <main class="form-signin w-100 m-auto">
+        <h1 class="h3 mb-3 fw-normal">Create Library</h1>
+        <form [formGroup]="libraryForm" (submit)="createLibrary()">
+            <div class="form-control">
+                <label>Enter Name</label>
+                <input type="text" formControlName="name" class="form-control" required>
+            </div>
+            <div class="form-control">
+                <label>Enter Description</label>
+                <input type="text" formControlName="description" class="form-control" required>
+            </div>
+            <div class="form-control">
+                <label>Select Machine</label>
+                <select class="form-control" formControlName="machineId">
+                    <option *ngFor=" let machine of machines" value="{{machine._id}}">{{machine.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label>Select Machine Type</label>
+                <select class="form-control" formControlName="machineTypeId">
+                    <option *ngFor=" let machine of machineTypes" value="{{machine._id}}">{{machine.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label>Select Library Type</label>
+                <select class="form-control" formControlName="libraryTypeId">
+                    <option *ngFor=" let libraryType of libraryTypes" value="{{libraryType._id}}">{{libraryType.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label>Select Category</label>
+                <select class="form-control" formControlName="categoryId">
+                    <option *ngFor=" let category of categories" value="{{category._id}}">{{category.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label>Select SubCategory</label>
+                <select class="form-control" formControlName="subcategoryId">
+                    <option *ngFor=" let subCategory of subCategories" value="{{subCategory._id}}">{{subCategory.name}}
+                    </option>
+                </select>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Create Library</button>
+        </form>
+    </main>
+</div>

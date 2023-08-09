@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { EditComponent } from './edit/edit.component';
+import { CreateLibraryComponent } from './create-library/create-library.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { EditComponent } from './edit/edit.component';
     HomeComponent,
     HeaderComponent,
     EditComponent,
+    CreateLibraryComponent,
   ],
   imports: [
     BrowserModule,

@@ -39,7 +39,9 @@ export class LoginComponent implements OnInit {
       this.http.post(`${this.reqUrl}/backend/account/login`, obj).subscribe(
         (data) => {
           localStorage.setItem('token', JSON.stringify(data));
-          console.log(data);
+          let userJson: any = JSON.parse(localStorage.getItem('token') || '');
+          localStorage.setItem('token', JSON.stringify(userJson.accessToken));
+          // let t: string = JSON.parse(localStorage.getItem('token') || '');
           this.router.navigate(['/home']);
         },
         (err) => {
